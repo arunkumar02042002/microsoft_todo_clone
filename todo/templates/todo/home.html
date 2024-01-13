@@ -1,0 +1,147 @@
+{% extends "common/base.html" %}
+{% load static %}
+
+{% block title %}My Day{% endblock title %}
+
+{% block css %}
+<style>
+    body {
+    margin: 0;
+    padding: 0;
+    background-image: url('{% static "images/bg.jpeg" %}');
+    background-repeat: no-repeat; 
+    background-size: cover;
+    }
+
+    input::placeholder {
+        color: white !important;
+    }
+
+    input {
+        color:white !important;
+      }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="col py-3 px-3">
+    <div class="d-flex flex-column align-items-center">
+        <div class="col-md-12 col-lg-12 mb-1 align-items-center">
+            <h1 class="px-1">
+                <i class="fs-10 bi-house"></i>
+                <span class="ms-1 d-none d-sm-inline">Tasks</span>
+            </h1>
+            <p class="text-muted mx-1">{% now "jS F Y" %}</p>
+        </div>
+
+        <!-- Tasks -->
+        <div class="col-md-12 col-lg-12" style="height: 500px; overflow-y: scroll; overflow-x: hidden;">
+            <div class="card m-1 bg-dark text-white">
+                <div class="card-body">
+                    <span style="width: 100px; overflow: hidden;">This is some task. 1</span>
+                    <span style="position: relative; float: right;">
+                        <a href="" class="btn btn-success"><i class="fa fa-check"></i></a>
+                        <a href="" class="btn btn-danger"><i class="fa fa-trash"></i></a>
+                        <a href="" class="btn btn-primary"><i class="fa fa-pencil"></i></a>
+                    </span>
+                </div>
+            </div>
+            <div class="card m-1 bg-dark text-white">
+                <div class="card-body">
+                    <span>This is some task. 2</span>
+                    <span style="position: relative; float: right;">
+                        <a href="" class="btn btn-success"><i class="fa fa-check"></i></a>
+                        <a href="" class="btn btn-danger"><i class="fa fa-trash"></i></a>
+                        <a href="" class="btn btn-primary"><i class="fa fa-pencil"></i></a>
+                    </span>
+                </div>
+            </div>
+            <div class="card m-1 bg-dark text-white">
+                <div class="card-body">
+                    <span>This is some task. 3</span>
+                    <span style="position: relative; float: right;">
+                        <a href="" class="btn btn-success"><i class="fa fa-check"></i></a>
+                        <a href="" class="btn btn-danger"><i class="fa fa-trash"></i></a>
+                        <a href="" class="btn btn-primary"><i class="fa fa-pencil"></i></a>
+                    </span>
+                </div>
+            </div>
+            <div class="card m-1 bg-dark text-white">
+                <div class="card-body">
+                    <span>This is some task. 4</span>
+                    <span style="position: relative; float: right;">
+                        <a href="" class="btn btn-success"><i class="fa fa-check"></i></a>
+                        <a href="" class="btn btn-danger"><i class="fa fa-trash"></i></a>
+                        <a href="" class="btn btn-primary"><i class="fa fa-pencil"></i></a>
+                    </span>
+                </div>
+            </div>
+            <div class="card m-1 bg-dark text-white">
+                <div class="card-body">
+                    <span>This is some task. 5</span>
+                    <span style="position: relative; float: right;">
+                        <a href="" class="btn btn-success"><i class="fa fa-check"></i></a>
+                        <a href="" class="btn btn-danger"><i class="fa fa-trash"></i></a>
+                        <a href="" class="btn btn-primary"><i class="fa fa-pencil"></i></a>
+                    </span>
+                </div>
+            </div>
+            <div class="card m-1 bg-dark text-white">
+                <div class="card-body">
+                    <span>This is some task. 6</span>
+                    <span style="position: relative; float: right;">
+                        <a href="" class="btn btn-success"><i class="fa fa-check"></i></a>
+                        <a href="" class="btn btn-danger"><i class="fa fa-trash"></i></a>
+                        <a href="" class="btn btn-primary"><i class="fa fa-pencil"></i></a>
+                    </span>
+                </div>
+            </div>
+            <div class="card m-1 bg-dark text-white">
+                <div class="card-body">
+                    <span>This is some task. 7</span>
+                    <span style="position: relative; float: right;">
+                        <a href="" class="btn btn-success"><i class="fa fa-check"></i></a>
+                        <a href="" class="btn btn-danger"><i class="fa fa-trash"></i></a>
+                        <a href="" class="btn btn-primary"><i class="fa fa-pencil"></i></a>
+                    </span>
+                </div>
+            </div>
+            <div class="card m-1 bg-dark text-white">
+                <div class="card-body">
+                    <span>This is some task. 8</span>
+                    <span style="position: relative; float: right;">
+                        <a href="" class="btn btn-success"><i class="fa fa-check"></i></a>
+                        <a href="" class="btn btn-danger"><i class="fa fa-trash"></i></a>
+                        <a href="" class="btn btn-primary"><i class="fa fa-pencil"></i></a>
+                    </span>
+                </div>
+            </div>
+            <div class="card m-1 bg-dark text-white">
+                <div class="card-body">
+                    <span>This is some task. 9</span>
+                    <span style="position: relative; float: right;">
+                        <a href="" class="btn btn-success"><i class="fa fa-check"></i></a>
+                        <a href="" class="btn btn-danger"><i class="fa fa-trash"></i></a>
+                        <a href="" class="btn btn-primary"><i class="fa fa-pencil"></i></a>
+                    </span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Add task -->
+        <div class="col-md-12 col-lg-12 mt-3">
+            <div class="card bg-dark text-white">
+                <form action="" method="POST">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <span style="display: flex;">
+                            <input type="text" name="task" class="form-control bg-dark" placeholder="Add a task">
+                            <button type = "submit" class="btn btn-primary" style="width: 200px;"><i class="fa fa-plus"></i> Add</button>
+                        </span>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
