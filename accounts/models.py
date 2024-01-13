@@ -7,7 +7,7 @@ class User(AbstractUser):
     profile_img = models.ImageField(upload_to='users/profile_images', default='blank-profile-picture.png')
 
     def save(self, *args, **kwargs):
-        # If bio is not provided, set a default bio based on the first_name
-        if not self.bio and self.first_name:
-            self.bio = f"I'm {self.first_name}."
+        # If bio is not provided, set a default bio based on the username
+        if not self.bio:
+            self.bio = f"I'm {self.username}!"
         super().save(*args, **kwargs)
