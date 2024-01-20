@@ -1,38 +1,61 @@
 from django.db import models
 from .choices import StatusChoice
 from django.contrib.auth import get_user_model
+from common.models import TimeStampedModel
+from datetime import datetime, timedelta
+from django.utils import timezone
 
 User = get_user_model()
 
-# Create your models here.
-class List(models.Model):
+def default_due_date():
+    return timezone.now() + timedelta(days=1)
+
+# One User can create multiple lists
+class List(TimeStampedModel):
     title = models.CharField(max_length=15)
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="lists")
 
     def __str__(self) -> str:
-        return self.title
+        return f"{self.title}-user-{self.user_id}"
 
 
-class Tag(models.Model):
+# Tags
+class Tag(TimeStampedModel):
     title = models.CharField(max_length=20, unique=True)
 
     def __str__(self) -> str:
         return self.title
 
-class Task(models.Model):
+# Tasks
+class Task(TimeStampedModel):
     title = models.CharField(max_length=120)
     description = models.CharField(max_length=255)
-    status = models.CharField(choices=StatusChoice.CHOICE_LIST, max_length=20)
-    list = models.ForeignKey(List, on_delete=models.CASCADE, related_name='tasks')
+    status = models.CharField(choices=StatusChoice.CHOICE_LIST, max_length=20, default=StatusChoice.PENDING)
     is_important = models.BooleanField(default=False)
-    due_date = models.DateField()
-    due_time = models.TimeField()
+    due_date = models.DateField(default=default_due_date)
+    due_time = models.TimeField(default=timezone.now)
+
+    # Relationships
+    list = models.ForeignKey(List, on_delete=models.CASCADE, related_name='tasks', null=True, blank=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='tasks')
     tag = models.ManyToManyField(Tag, related_name='tasks', through='TaskTag')
+
+    def is_due_date_today(self, *args, **kwargs):
+        return self.due_date == datetime.now().date() and self.status != StatusChoice.COMPLETED
+    
+    def is_task_missed(self, *args, **kwargs):
+        return self.status != StatusChoice.COMPLETED and self.due_date <= datetime.now().date() and self.due_time < datetime.now().time()
+
+    def save(self, *args, **kwargs):
+        if not self.description:
+            self.description = f"This task needs to be completed before {self.due_date.day}!"
+        super().save(*args, **kwargs)
 
     def __str__(self) -> str:
         return self.title
 
-class TaskTag(models.Model):
+# TaskTag to maintain many to many relationships between Task and Tag 
+class TaskTag(TimeStampedModel):
     tag = models.ForeignKey(Tag, on_delete=models.CASCADE)
     task = models.ForeignKey(Task, on_delete=models.CASCADE)
 
