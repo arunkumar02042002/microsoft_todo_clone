@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.views.generic import ListView
+from django.views.generic import ListView, DetailView
+from django.views import View
 from todo.models import Task, List
 from datetime import datetime
 from django.utils import timezone
@@ -39,3 +40,7 @@ class MyDayView(ListView):
         now = timezone.now().date()
         query = Q(user=user, due_date=now)
         return Task.objects.filter(query)
+    
+# class ListDetailView(View):
+#     def get(self, request, *args, **kwargs):
+#         tasks = 

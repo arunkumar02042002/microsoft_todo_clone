@@ -4,7 +4,7 @@ from django.contrib.auth import get_user_model
 from common.models import TimeStampedModel
 from datetime import datetime, timedelta
 from django.utils import timezone
-from shortuuidfield import ShortUUIDField
+import shortuuid
 from django.utils.text import slugify
 
 User = get_user_model()
@@ -16,14 +16,14 @@ def default_due_date():
 class List(TimeStampedModel):
     title = models.CharField(max_length=15)
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="lists")
-    slug = models.SlugField(unique=True)
+    slug = models.SlugField(unique=True, default=shortuuid.uuid)
 
     def __str__(self) -> str:
         return f"{self.title}-user-{self.user_id}"
     
-    def save(self, request, *args, **kwargs):
+    def save(self, *args, **kwargs):
         # Modify the slug field before saving
-        self.slug = f"{slugify(self.title)}-{ShortUUIDField().to_python(None)}"
+        self.slug = f"{slugify(self.title)}-{shortuuid.uuid()}"
         return super().save(*args, **kwargs)
 
 
