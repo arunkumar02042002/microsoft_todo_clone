@@ -16,7 +16,7 @@ def default_due_date():
 class List(TimeStampedModel):
     title = models.CharField(max_length=15)
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="lists")
-    slug = models.SlugField(unique=True, default=shortuuid.uuid)
+    slug = models.SlugField(unique=True, blank=True)
 
     def __str__(self) -> str:
         return f"{self.title}-user-{self.user_id}"
@@ -25,7 +25,6 @@ class List(TimeStampedModel):
         # Modify the slug field before saving
         self.slug = f"{slugify(self.title)}-{shortuuid.uuid()}"
         return super().save(*args, **kwargs)
-
 
 # Tags
 class Tag(TimeStampedModel):
